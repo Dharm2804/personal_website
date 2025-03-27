@@ -10,7 +10,6 @@ app.use('/project', express.static(path.join(__dirname, '../project')));
 
 // Handle React routing, return all requests to React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../project/dist', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
