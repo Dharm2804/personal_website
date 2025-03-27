@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DKImage from './assets/DK.jpg';
 import DKPDF from './assets/Dharm Kasundra.pdf';
+import DVK from './assets/DVK.png';
 import {
   User,
   GraduationCap,
@@ -23,81 +24,85 @@ import { useTheme } from "./ThemeContext";
 // Add this to your CSS file (e.g., index.css) or a <style> tag in your index.html
 // For simplicity, assume it's added globally
 
-const About = () => (
-  <div className="space-y-8">
-    <div className="text-center">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-white bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-        About Me
-      </h2>
-      <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-        Passionate developer blending web technologies with AI/ML to create innovative solutions
-      </p>
-    </div>
+const About = () => {
+  const [currentImage, setCurrentImage] = useState('DKImage');
 
-    <div className="flex flex-col lg:flex-row items-center gap-8">
-      {/* Profile Image with Enhanced Effects */}
-      <div className="relative group flex-shrink-0 mx-auto lg:mx-0">
-        <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-lg opacity-20 group-hover:opacity-30 transition-opacity duration-500 animate-pulse"></div>
-        <div className="relative rounded-full p-1 bg-gradient-to-r from-blue-500 to-purple-500">
-        <img
-        src={DKImage}
-        alt="Dharm Kasundra"
-        className="rounded-full w-60 h-90 object-cover border-4 border-white dark:border-gray-800 shadow-xl transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-2"
-      />
-        </div>
+  // Toggle between images every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev === 'DKImage' ? 'DVK' : 'DKImage'));
+    }, 15000); // 5000ms = 5 seconds
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="space-y-8">
+      <div className="text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-white bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          About Me
+        </h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Passionate developer blending web technologies with AI/ML to create innovative solutions
+        </p>
       </div>
 
-      {/* About Content */}
-      <div className="space-y-6">
-        {[
-          {
-            icon: "🎓", // Graduation cap
-            content: "Currently pursuing <strong>B.Tech in Information Technology</strong> at <strong>Charusat University</strong>, specializing in <strong>web development</strong> and <strong>AI/ML</strong> applications."
-          },
-          {
-            icon: "💻", // Computer
-            content: "Passionate about building <strong>scalable web applications</strong> enhanced with <strong>AI-powered solutions</strong>. Focused on creating seamless user experiences through optimized frontend interfaces and robust backend systems."
-          },
-          {
-            icon: "🚀", // Rocket
-            content: "Constantly exploring <strong>emerging technologies</strong> in cloud computing and data science. Committed to lifelong learning and contributing to open-source projects that solve real-world problems."
-          },
-          {
-            icon: "🤝", // Handshake
-            content: "Enjoy collaborating on <strong>innovative projects</strong> and connecting with like-minded developers. Always open to discussing new opportunities and creative ideas."
-          }
-        ].map((item, index) => (
-          <div 
-            key={index} 
-            className="flex items-start bg-white/50 dark:bg-gray-800/50 p-4 rounded-lg backdrop-blur-sm border border-gray-100 dark:border-gray-700 animate-fade-in-up"
-            style={{ animationDelay: `${index * 0.15}s` }}
-          >
-            <span className="text-2xl mr-4 mt-1">{item.icon}</span>
-            <p 
-              className="text-gray-700 dark:text-gray-300 text-justify leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: item.content }}
+      <div className="flex flex-col lg:flex-row items-center gap-8">
+        {/* Profile Image with Enhanced Effects */}
+        <div className="relative group flex-shrink-0 mx-auto lg:mx-0 overflow-hidden">
+          <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-lg opacity-20 group-hover:opacity-30 transition-opacity duration-500 animate-pulse"></div>
+          <div className="relative rounded-full p-1 bg-gradient-to-r from-blue-500 to-purple-500">
+            <img
+              key={currentImage} // Key changes trigger re-render and animation
+              src={currentImage === 'DKImage' ? DKImage : DVK}
+              alt={currentImage === 'DKImage' ? 'Dharm Kasundra' : 'DVK Logo'}
+              className="rounded-full w-60 h-90 object-cover border-4 border-white dark:border-gray-800 shadow-xl transform transition-all duration-500 group-hover:scale-105 animate-slide-in"
             />
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
 
-    {/* Skills Preview */}
-    <div className="mt-8">
-      <h3 className="text-xl font-semibold dark:text-white mb-4">Technical Focus Areas</h3>
-      <div className="flex flex-wrap gap-3 justify-center">
-        {['Web Development', 'AI/ML', 'Cloud Computing', 'UI/UX'].map((skill, i) => (
-          <span 
-            key={i}
-            className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-medium"
-          >
-            {skill}
-          </span>
-        ))}
+        {/* About Content */}
+        <div className="space-y-6">
+          {[
+            {
+              icon: '🎓',
+              content:
+                'Currently pursuing <strong>B.Tech in Information Technology</strong> at <strong>Charusat University</strong>, specializing in <strong>web development</strong> and <strong>AI/ML</strong> applications.',
+            },
+            {
+              icon: '💻',
+              content:
+                'Passionate about building <strong>scalable web applications</strong> enhanced with <strong>AI-powered solutions</strong>.',
+            },
+            {
+              icon: '🚀',
+              content:
+                'Constantly exploring <strong>emerging technologies</strong> in cloud computing and data science.',
+            },
+            {
+              icon: '🤝',
+              content:
+                'Enjoy collaborating on <strong>innovative projects</strong> and connecting with like-minded developers.',
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="flex items-start bg-white/50 dark:bg-gray-800/50 p-4 rounded-lg backdrop-blur-sm border border-gray-100 dark:border-gray-700 animate-fade-in-up"
+              style={{ animationDelay: `${index * 0.15}s` }}
+            >
+              <span className="text-2xl mr-4 mt-1">{item.icon}</span>
+              <p
+                className="text-gray-700 dark:text-gray-300 text-justify leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: item.content }}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Education = () => (
   <div className="space-y-8">
@@ -768,37 +773,57 @@ function App() {
               )}
             </button>
           </div>
-          <nav className="space-y-2">
-            {sections.map((section, index) => {
-              const Icon = section.icon;
-              return (
-                <button
-                  key={section.id}
-                  onClick={() => {
-                    setActiveSection(section.id);
-                    setIsMenuOpen(false);
-                  }}
-                  className={`
-                    w-full flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300
-                    ${
-                      activeSection === section.id
-                        ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg transform scale-105"
-                        : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:scale-102"
-                    }
-                  `}
-                  style={{ animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both` }}
-                >
-                  <Icon
-                    size={20}
-                    className={
-                      activeSection === section.id ? "animate-bounce" : "hover:animate-pulse"
-                    }
-                  />
-                  <span>{section.label}</span>
-                </button>
-              );
-            })}
-          </nav>
+          <nav className="space-y-3">
+  {sections.map((section, index) => {
+    const Icon = section.icon;
+    return (
+      <button
+        key={section.id}
+        onClick={() => {
+          setActiveSection(section.id);
+          setIsMenuOpen(false);
+        }}
+        className={`
+          w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300
+          ${
+            activeSection === section.id
+              ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg transform scale-[1.02]"
+              : "text-gray-700 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-700/50 hover:scale-[1.02]"
+          }
+          group
+        `}
+        style={{ animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both` }}
+      >
+        <div className={`
+          p-2 rounded-lg transition-all duration-300
+          ${
+            activeSection === section.id 
+              ? "bg-white/20" 
+              : theme === "dark" 
+                ? "bg-gradient-to-r from-blue-500/20 to-purple-500/20 group-hover:bg-blue-500/10" 
+                : "bg-gray-100 group-hover:bg-blue-100"
+          }
+        `}>
+          <Icon
+            size={20}
+            className={`
+              ${
+                activeSection === section.id 
+                  ? "text-white" 
+                  : theme === "dark" 
+                    ? "text-blue-400 group-hover:text-purple-400" 
+                    : "text-blue-600 group-hover:text-purple-600"
+              }
+              transition-colors duration-300
+              ${activeSection === section.id ? "animate-bounce" : "group-hover:animate-pulse"}
+            `}
+          />
+        </div>
+        <span className="font-medium">{section.label}</span>
+      </button>
+    );
+  })}
+</nav>
           <div className="mt-4 lg:hidden animate-fade-in-up">
             <button
               onClick={toggleTheme}
