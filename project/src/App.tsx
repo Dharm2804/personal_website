@@ -738,7 +738,9 @@ function App() {
         </h1>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 transform hover:rotate-90"
+          className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 transform hover:rotate-90 ${
+            theme === "dark" ? "bg-gradient-to-r from-blue-600 to-purple-600" : "bg-gray-300"
+  }`}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
