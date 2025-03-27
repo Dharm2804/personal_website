@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "cd server && node server.js",
-    "build": "react-scripts build && move build project\\dist"
+    "build": "react-scripts build"
   },
   "dependencies": {
     "express": "^4.21.2"
